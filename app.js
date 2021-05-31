@@ -3,6 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const cors = require('cors')
 const PORT = process.env.PORT || 5000
 // Importing models
 const User = require('./models/user')
@@ -29,6 +30,8 @@ mongoose.connection.on('connected', (err)=>{
 
  
 app.use(express.json())
+
+app.use(cors())
 
 const requireLogin = (req, res,next) =>{
     const {authorization} = req.headers
