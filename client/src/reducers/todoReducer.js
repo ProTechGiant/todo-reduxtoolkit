@@ -51,7 +51,7 @@ export const todoReducer = createSlice({
            
         },
         [GET_TODO.fulfilled]:(state, {payload:{message}}) => {
-            
+            console.log(message)
             return message
         },
         

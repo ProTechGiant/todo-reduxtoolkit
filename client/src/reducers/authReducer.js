@@ -10,7 +10,7 @@ export const signupUser = createAsyncThunk(
     'signupuser',
     async(body, state)=>{
         state= initialState
-      const result = await fetch2('/signup', body,)
+      const result = await fetch2('/signup', body,"post")
       return result
     }
 )
@@ -18,7 +18,7 @@ export const signupUser = createAsyncThunk(
 export const signinUser = createAsyncThunk(
     'signinuser',
     async(body)=>{
-      const result = await fetch2('/signin', body,)
+      const result = await fetch2('/signin', body,"post")
       return result
     }
 )

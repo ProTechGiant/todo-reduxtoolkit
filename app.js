@@ -9,12 +9,11 @@ const PORT = process.env.PORT || 5000
 const User = require('./models/user')
 const Todo = require('./models/todo')
 const user = require('./models/user')
-const { updateOne } = require('./models/user')
-const { MONGOURI , JWT_SECRET} = require('./config/keys')
+const { MONGO_URL , JWT_SECRET} = require('./config/keys')
 
 const app = express()
 
-mongoose.connect(MONGOURI,{
+mongoose.connect(MONGO_URL,{
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -31,7 +30,7 @@ mongoose.connection.on('connected', (err)=>{
  
 app.use(express.json())
 
-app.use(cors())
+
 
 const requireLogin = (req, res,next) =>{
     const {authorization} = req.headers
@@ -73,7 +72,7 @@ app.post('/signup', async (req, res) => {
     }
 })
 
-//Signin post Method
+//Sign_in post Method
 app.post('/signin', async(req, res) => {
     const {email, password} = req.body
     console.log(req.body)
@@ -86,6 +85,7 @@ app.post('/signin', async(req, res) => {
             return res.status(422).json({error:"email doesn't exist"})
          }
          const doMatch = await bcrypt.compare(password, user.password)
+         console.log(doMatch)
          if(doMatch){
             const token = jwt.sign({userId:user._id}, JWT_SECRET)
             res.status(201).json({token})
@@ -109,12 +109,12 @@ app.post('/createtodo', requireLogin, async (req, res) => {
     res.status(201).json({message:data})
     }) 
 
-    app.get('/gettodos', requireLogin, async(req, res) => {
+    app.get('/gettodos', requireLogin, async(req, res, err) => {
        const data = await Todo.find({
             todoBy: req.user
         })
         res.status(200).json({message:data})
-        
+        console.log(data)
     })
 
     app.put('/update/:id', requireLogin, async (req , res) => {
